@@ -1,0 +1,137 @@
+# Christopher Brugnoli
+
+
+# Title screen
+
+print('\n* * * * * * * * * * *')
+
+print('*The Temple of Hades*')
+
+print('* * * * * * * * * * *\n')
+
+print('A Text Adventure Game\n')
+
+print('Written and Coded by: Christopher Brugnoli\n')
+
+input('Press Enter to start...\n')
+
+
+# Story
+
+print('Your name is Aristaeus. You’ve come to the Temple of Hades to rescue your wife Eurydice.')
+
+print('Cerberus guards the way to the Underworld.\n')
+
+print('Collect all six of his toys hidden around the temple to pass.\n')
+
+print('Type North, South, East, or West to move.')
+
+print('Type Take to collect an item.')
+
+# directory of rooms and items
+
+rooms = {
+
+   'Cibus': {'West': 'Velit', 'North': 'Hortus', 'East': 'Canis domas', 'South': 'Agitur','Item':'Jerky'},
+
+   'Agitur': {'North': 'Cibus', 'East': 'Nugas'},
+
+   'Nugas': {'West': 'Agitur','Item':'Stuffed Cow'},
+
+   'Velit': {'East': 'Cibus','Item':'Leash'},
+
+   'Stridore': {'West': 'Hortus','Item':'Ball'},
+
+   'Hortus' :{'East': 'Stridore', 'South': 'Cibus','Item':'Bone'},
+
+   'Mortem' : {'South':'Canis domas'},
+
+   'Canis domas': {'West':'Cibus', 'North': 'Mortem','Item':'Alecto Plush'},
+
+}
+
+# first room
+
+current_room = 'Cibus'
+
+#inventory storage
+
+inventory = []
+
+# Game loop
+
+while True:
+
+   print(f"\nYou are in {current_room}.")
+
+
+   # Show item in room
+
+   if 'Item' in rooms[current_room]:
+
+       print(f"You see a {rooms[current_room]['Item']}.")
+
+
+   # Show inventory and directions can go
+
+   print("Inventory:", inventory)
+
+   directions=[key for key in rooms[current_room].keys() if key in ['North', 'South', 'East', 'West']]
+
+   if directions:
+
+       print("You can go:", ', '.join(directions))
+
+   # lens statement with Win/Lose condition with how many items are needed
+
+   if current_room == 'Mortem':
+
+       if len(inventory) >= 6:
+
+           print('Cerberus wags his tail and lets you pass. You saved Eurydice!')
+
+       else:
+
+           print('Cerberus growls... You do not have enough toys. You were eaten!!')
+
+       break
+
+   # Player command directions and take
+
+   command=input("Enter command: ").title().strip()
+
+
+   # Take item if there is an item vs no item
+
+   if command == 'Take':
+
+       if 'Item' in rooms[current_room]:
+
+           item=rooms[current_room].pop('Item')
+
+           inventory.append(item)
+
+           print(f"You picked up the {item}.")
+
+       else:
+
+           print("There's nothing to take here.")
+
+
+   # Movement directions
+
+   elif command in ['North', 'South', 'East', 'West']:
+
+       if command in rooms[current_room]:
+
+           current_room=rooms[current_room][command]
+
+       else:
+
+           print("You can't go that way.")
+
+#else statement for invalid command
+
+   else:
+
+       print("Invalid command. Try North, South, East, West or Take.")
